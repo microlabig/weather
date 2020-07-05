@@ -4,6 +4,8 @@ dist/
 npm-debug.log
 yarn-error.log
 *.lock
+.env*
+./src/consts/index.js
 
 # Editor directories and files
 .idea

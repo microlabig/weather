@@ -1,17 +1,17 @@
 <template lang="pug">
   div
-    h1 Hello
+    weather-app
 </template>
 
 <script>
-export default {
-  name: 'app',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
+  import WeatherApp from "./components/Weather";
+
+  export default {
+    name: 'app',
+    components: {
+      WeatherApp
     }
   }
-}
 </script>
 
 <style lang="scss">
