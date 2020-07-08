@@ -1,19 +1,20 @@
 <template lang="pug">
-  div
-    weather-app
+  main.weather
+    router-view
 </template>
 
 <script>
-  import WeatherApp from "./components/Weather";
+  import Err404 from '@/components/Err404'; 
+  import Search from '@/components/Search'; 
+  import Weather from '@/components/Weather'; 
 
   export default {
-    name: 'app',
     components: {
-      WeatherApp
+      Err404, Search, Weather
     }
   }
 </script>
 
 <style lang="scss">
-  @import url('./app.scss');
+  @import url('./styles/main.scss');
 </style>

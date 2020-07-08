@@ -1,83 +1,58 @@
 <template lang="pug">
-    div
+    section.weather
+      .container
+      .weather__title(v-if="isLoading")
+        preloader
+      .weather__title(v-else)
+        h2 Погода на {{Date.now().toUTCSting()}} в городе {{weatherData.name}}
         pre {{data}}
         p 5&deg;
+      .weather__links
+        ul.weather__list
+          li(
+            v-for="(link, idx) in links"
+            :key="idx"
+          ).weather__item
+            router-link(
+              :to="link.to"
+            ) {{link.text}}
 </template>
 
 <script>
-import axios from "axios";
+  import { mapGetters } from 'vuex'; 
+  import Preloader from './Preloader';
 
-export default {
-  data() {
-    return {
-      data: null
-    };
-  },
-  async created() {
-    const data = require("../data/consts.json");
-    const { api } = data;
-    const lat = 55.37976654;
-    const lon = 43.78774518;
-
-    try {
-        // текущая погода
-      const response = await axios.get(
-        `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api}&lang=ru`
-      ); // api.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid={your api key}
-      this.data = response.data;
-    } catch (error) {
-      console.error(error);
+  export default {
+    components: {
+      Preloader
+    },
+    data() {
+      return {
+        links: [
+          {
+            to: "{name: 'Weather', props: {city: weatherData.name}}", // TODO:
+            text: "Погода на 10 дней"
+          },
+          {
+            to: "{name: 'Search'}",
+            text: "На главную"
+          }
+        ]
+      }
+    },
+    computed: {
+      ...mapGetters('weather', ['getWeather', 'getIsLoading', 'getIsLoaded']),
+      isLoading() {
+        return this.getIsLoading();
+      },
+      isLoaded() {
+        return this.getIsLoaded();
+      },
+      weatherData() {
+        return this.getWeather();
+      }
     }
-  }
-
-  /*
-
-  {
-  "coord": {
-    "lon": 37, // Географическое положение города, долгота
-    "lat": 55 // Город географическое положение, широта
-  },
-  "weather": [
-    {
-      "id": 802, // Идентификатор погодного условия
-      "main": "Clouds", // Группа параметров погоды (Дождь, Снег, Экстрим и т. Д.)
-      "description": "scattered clouds", // Погодные условия внутри группы. Вы можете получить вывод на вашем языке
-      "icon": "03d" // Идентификатор значка погоды
-    }
-  ],
-  "base": "stations",
-  "main": {
-    "temp": 295.51, // Температура. Единица по умолчанию: Кельвин, Метрика: Цельсий, Империал: Фаренгейт.
-    "feels_like": 297.05, // Температура. Этот температурный параметр учитывает восприятие человеком погоды. Единица по умолчанию: Кельвин, Метрика: Цельсий, Империал: Фаренгейт.
-    "temp_min": 295.15, // Минимальная температура на данный момент. Это минимальная наблюдаемая в настоящее время температура (в пределах крупных мегаполисов и городских районов). Единица по умолчанию: Кельвин, Метрика: Цельсий, Империал: Фаренгейт.
-    "temp_max": 296.15, // Максимальная температура на данный момент. Это максимальная наблюдаемая в настоящее время температура (в пределах крупных мегаполисов и городских районов). Единица по умолчанию: Кельвин, Метрика: Цельсий, Империал: Фаренгейт.
-    "pressure": 1011, // давление
-    "humidity": 78 // влыжность
-  },
-  "visibility": 10000, // видимость
-  "wind": {
-    "speed": 2, // Скорость ветра. Единица измерения по умолчанию: метр / сек, метрика: метр / сек, империал: миль / час
-    "deg": 240 // Направление ветра, град (метеорологическое)
-  },
-  "clouds": {
-    "all": 40 // Облачность,%
-  },
-  "dt": 1593967893, // Время расчета данных, Unix, UTC
-  "sys": {
-    "type": 1,
-    "id": 9017,
-    "country": "RU", // Код страны
-    "sunrise": 1593910879, // Время восхода, Unix, UTC
-    "sunset": 1593972693 // Время заката, Unix, UTC
-  },
-  "timezone": 10800, // Сдвиг в секундах от UTC
-  "id": 529315, // ID города
-  "name": "Marinki", // Название города
-  "cod": 200
-}
-
-  */
-};
+  };
 </script>
 
 <style lang="scss"></style>
