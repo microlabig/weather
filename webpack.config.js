@@ -1,5 +1,7 @@
-var path = require("path");
-var webpack = require("webpack");
+const path = require("path");
+const webpack = require("webpack");
+
+const isProductionBuild = process.env.NODE_ENV === "production";
 
 module.exports = {
   entry: {
@@ -18,7 +20,15 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        use: ["vue-style-loader", "css-loader", "sass-loader"]
+        use: [
+          "vue-style-loader",
+          isProductionBuild
+            ? "css-loader"
+            : { loader: "css-loader", options: { sourceMap: true } },
+          isProductionBuild
+            ? "sass-loader"
+            : { loader: "sass-loader", options: { sourceMap: true } }
+        ]
       },
       {
         test: /\.sass$/,

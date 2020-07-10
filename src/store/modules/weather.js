@@ -19,12 +19,6 @@ export default {
     SET_IS_LOADED: (state, flag) => {
       state.isLoaded = flag;
     },
-    // REMOVE_CATEGORY: (state, categoryId) => {
-    //     state.categories = state.categories.filter(category => category.id !== categoryId)
-    // },
-    // EDIT_NAME_CATEGORY: (state, editedCategory) => {
-    //     state.categories = state.categories.map(category => category.id !== editedCategory.id ? category : editedCategory)
-    // }
   },
   actions: {
     // метод получения данных
@@ -94,7 +88,7 @@ export default {
     // }
   },
   getters: {
-    getWeather: (store) => store.weather,
+    getWeatherData: (store) => store.weather,
     getIsLoading: (store) => store.isLoading,
     getIsLoaded: (store) => store.isLoaded
   }

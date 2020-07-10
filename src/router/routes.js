@@ -1,14 +1,14 @@
-import Weather from '@/components/Weather';
-import Search from '@/components/Search';
-import Err404 from '@/components/Err404';
+import Weather from '@/components/pages/Weather';
+import City from '@/components/pages/City';
+import Err404 from '@/components/pages/Err404';
 
 export default {
     mode: 'history',
     routes: [
         {
             path: '/',
-            name: 'Search',
-            component: Search
+            name: 'City',
+            component: City
         },
         {
             path: '/weather',
