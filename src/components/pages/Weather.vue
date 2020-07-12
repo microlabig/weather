@@ -17,57 +17,57 @@ section.weather
                   :key="idx"
                 ).weather__item
                     router-link(
-                      :to="link.to"
+                      :to="{name: `${link.to}`}"
                     ) {{link.text}}
 </template>
 
 <script>
-  import { mapActions, mapGetters } from 'vuex';  
-  import { getCurrentDate } from '@/helpers';
-  import Preloader from '../common/Preloader';
+import { mapActions, mapGetters } from "vuex";
+import { getCurrentDate } from "@/helpers";
+import Preloader from "../common/Preloader";
 
-  export default {
-    components: {
-      Preloader
-    },
-    data() {
-      return {
-        links: [
-          {
-            to: "{name: 'Weather'}",
-            text: "Погода на 10 дней"
-          },
-          {
-            to: "{name: 'City'}",
-            text: "Настроить город"
-          }
-        ]
-      }
-    },
-    methods: {
-      ...mapActions("weather", ["fetchWeatherData"]),
-      // запрос данных о погоде
-      fetchWeather() {
-        const city = this.currentCity;
-        this.fetchWeatherData(city);
-      }
-    },
-    computed: {
-      ...mapGetters('weather', ['getWeatherData', 'getIsLoading', 'getIsLoaded']),
-      currentWeather() {
-        return this.getWeatherData;
-      },
-      currentDate() {
-        return getCurrentDate();
-      },
-      isLoadingWeather() {
-        return this.getIsLoading;
-      },
-      isLoadedWeather() {
-        return this.getIsLoaded;
-      },
+export default {
+  components: {
+    Preloader
+  },
+  data() {
+    return {
+      links: [
+        {
+          to: "Weather",
+          text: "Погода на 10 дней"
+        },
+        {
+          to: "Address",
+          text: "Настроить город"
+        }
+      ]
+    };
+  },
+  methods: {
+    ...mapActions("weather", ["fetchWeatherData"]),
+    // запрос данных о погоде
+    fetchWeather() {
+      const city = this.currentCity;
+      this.fetchWeatherData(city);
     }
-  };
+  },
+  computed: {
+    ...mapGetters("weather", ["getWeatherData", "getIsLoading", "getIsLoaded"]),
+    currentWeather() {
+      return this.getWeatherData;
+    },
+    currentDate() {
+      return getCurrentDate();
+    },
+    isLoadingWeather() {
+      return this.getIsLoading;
+    },
+    isLoadedWeather() {
+      return this.getIsLoaded;
+    }
+  }
+};
 </script>
 
 <style lang="scss"></style>

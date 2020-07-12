@@ -10,6 +10,7 @@ import App from "./App.vue";
 import "normalize.css";
 import "./styles/main.scss";
 
+// ------- Ymaps ----------
 const data = require("@/data/consts.json");
 const { ymaps_api } = data;
 
@@ -22,8 +23,10 @@ const YMapsSettings = {
 
 Vue.use(YmapPlugin, YMapsSettings);
 
+// ----------- axios into store as global -----------
 store.$axios = axios;
 
+// ----------- instance Vue --------
 new Vue({
   el: "#app",
   router,

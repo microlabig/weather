@@ -1,5 +1,5 @@
 import Weather from '@/components/pages/Weather';
-import City from '@/components/pages/City';
+import Address from '@/components/pages/Address';
 import Err404 from '@/components/pages/Err404';
 
 export default {
@@ -7,8 +7,8 @@ export default {
     routes: [
         {
             path: '/',
-            name: 'City',
-            component: City
+            name: 'Address',
+            component: Address
         },
         {
             path: '/weather',

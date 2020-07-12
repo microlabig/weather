@@ -11,7 +11,7 @@ export default {
   },
   mutations: { // для изменеия в state
     SET_WEATHER: (state, weatherData) => {
-      state.weather = { ...weatherData };
+      state.weather = { ...state.weather, ...weatherData };
     },
     SET_IS_LOADING: (state, flag) => {
       state.isLoading = flag;

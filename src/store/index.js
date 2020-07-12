@@ -4,11 +4,11 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 import weather from './modules/weather';
-import city from './modules/city';
+import address from './modules/address';
 
 export default new Vuex.Store({
   modules: {
     weather,
-    city
+    address
   }
 });
