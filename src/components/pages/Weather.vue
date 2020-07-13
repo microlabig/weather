@@ -23,7 +23,7 @@ section.weather
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import { getCurrentDate } from "@/helpers";
+import { defaultCoords, getCurrentDate } from "@/helpers";
 import Preloader from "../common/Preloader";
 
 export default {
@@ -46,26 +46,45 @@ export default {
   },
   methods: {
     ...mapActions("weather", ["fetchWeatherData"]),
+    // ----------------------
     // запрос данных о погоде
-    fetchWeather() {
-      const city = this.currentCity;
-      this.fetchWeatherData(city);
+    // ----------------------
+    async fetchWeather() {
+      const coords = this.getGeoInfo.address ? this.getGeoInfo : defaultCoords;
+      return await this.fetchWeatherData(coords);
     }
   },
   computed: {
     ...mapGetters("weather", ["getWeatherData", "getIsLoading", "getIsLoaded"]),
+    ...mapGetters("address", ["getGeoInfo"]),
+    // -----------------------
+    // текущие данные о погоде
+    // -----------------------
     currentWeather() {
       return this.getWeatherData;
     },
-    currentDate() {
-      return getCurrentDate();
-    },
+    // -------------------------
+    // флаг - данные загружаются
+    // -------------------------
     isLoadingWeather() {
       return this.getIsLoading;
     },
+    // -----------------------
+    // флаг - данные загружены
+    // -----------------------
     isLoadedWeather() {
       return this.getIsLoaded;
+    },
+    // ------------
+    // текущая дата
+    // ------------
+    currentDate() {
+      return getCurrentDate();
     }
+  },
+  async mounted() {
+    // запрос информации о погоде
+    await this.fetchWeather();
   }
 };
 </script>

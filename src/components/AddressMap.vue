@@ -1,6 +1,6 @@
 <template lang="pug">
 yandex-map(
-    :coords="currentCity | getCoords"
+    :coords="geoInfo | getCoords"
     :zoom="17"
     :controls=['zoomControl', 'searchControl']
     @map-was-initialized="yMapWasInitialized"
@@ -9,7 +9,7 @@ yandex-map(
 )
     ymap-marker(
         marker-id="123" 
-        :coords="currentCity | getCoords"
+        :coords="geoInfo | getCoords"
         :icon="markerIcon"
     )
 </template>
@@ -22,6 +22,7 @@ export default {
   data() {
     return {
       markerIcon: {
+        // свойства кастомной метки на карте
         layout: "default#image",
         imageHref: "./src/assets/geo.png",
         imageSize: [32, 32],
@@ -31,22 +32,29 @@ export default {
   },
   methods: {
     ...mapActions("address", ["getCurrentLocation", "getLocation"]),
+    // ------------------------------
+    // обработчик инициализации карты
+    // ------------------------------
     async yMapWasInitialized(map) {
+      // получить текущую позицию браузера
       await this.getCurrentLocation();
-
+      // найдем элемент поиска населенного пункта
       const searchControl = map.controls.get("searchControl"); // компонент поиска города на ymaps
-      // выбор города из поиска
+      // обработчик по выбору города из поиска
       searchControl.events.add("resultselect", e => {
         const geoObj = searchControl.getResultsArray(
           searchControl.getSelectedIndex()
-        )[0];
+        )[0]; // найдем элемент, по которому кликнул пользователь
         const coords = geoObj.geometry
           .getCoordinates()
-          .filter((item, index) => index < 2);
-        searchControl.hideResult();
-        this.getLocation(coords);
+          .filter((item, index) => index < 2); // определим координаты найденного населенного пункта (в массиве также есть третий аргумент - объект, он нам не нужен)
+        searchControl.hideResult(); // скрыть стандартные результаты поиска
+        this.getLocation(coords); // обновить координаты и название населенного пункта в хранилище
       });
     },
+    // -------------------------------------------------------------
+    // клик по карте и определение населенного пункта по координатам
+    // -------------------------------------------------------------
     yMapClick(e) {
       const coords = e.get("coords");
       this.getLocation(coords);
@@ -58,17 +66,17 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("address", ["getCityData", "getIsLoading", "getIsLoaded"]),
-    currentCity() {
-      return this.getCityData;
+    ...mapGetters("address", ["getGeoInfo", "getIsLoading", "getIsLoaded"]),
+    geoInfo() {
+      return this.getGeoInfo;
     }
   }
 };
 </script>
 
 <style lang="scss">
-.ymaps {
+  .ymaps {
     width: 500px;
     height: 500px;
-}
+  }
 </style>

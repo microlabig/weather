@@ -15,8 +15,7 @@ export default {
 
   state: { ...initState },
 
-  mutations: {
-    // для изменения в state
+  mutations: { // для изменения в state
     SET_CITY: (state, geoObject) => {
       state.geoObject = { ...state.geoObject, ...geoObject };
     },
@@ -31,7 +30,9 @@ export default {
   },
 
   actions: {
+    // -----------------------------
     // поиск текущего местоположения
+    // -----------------------------
     async getCurrentLocation({ commit, dispatch }) {
       try {
         dispatch("startLoading");
@@ -56,17 +57,19 @@ export default {
       }
     },
 
+    // -----------------------------
     // поиск местоположения по карте
+    // -----------------------------
     async getLocation({ commit, dispatch }, coords) {
       try {
         dispatch("startLoading");
         
-        const cityName = await geocodeBack(coords);
+        const address = await geocodeBack(coords);
 
         commit("SET_CITY", {
           lat: coords[0],
           lon: coords[1],
-          address: cityName
+          address
         });
         commit('SET_IS_LOADED', true)
         commit("SET_IS_LOADING", false);
@@ -78,7 +81,9 @@ export default {
       }
     },
 
+    // ----------------------
     // метод получения данных
+    // ----------------------
     async fetchCityName({ commit, dispatch }, str) {
       try {
         dispatch("startLoading");
@@ -91,22 +96,26 @@ export default {
       }
     },
 
+    // --------------
     // старт загрузки
+    // --------------
     startLoading({ commit }) {
       commit("SET_IS_LOADING", true);
       commit("SET_IS_LOADED", false);
     },
 
+    // -----------------------------------------
     // установка хранилища в начальное состояние
+    // -----------------------------------------
     storeToInit({ commit }) {
-      commit("SET_IS_LOADING", false);
-      commit("SET_IS_LOADED", false);
-      commit("SET_CITY", { ...initState });
+      commit("SET_IS_LOADING", initState.isLoading);
+      commit("SET_IS_LOADED", initState.isLoaded);
+      commit("SET_CITY", { ...initState.geoObject });
     }
   },
   
   getters: {
-    getCityData: store => store.geoObject,
+    getGeoInfo: store => store.geoObject,
     getIsLoading: store => store.isLoading,
     getIsLoaded: store => store.isLoaded
   }

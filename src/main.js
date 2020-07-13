@@ -10,7 +10,7 @@ import App from "./App.vue";
 import "normalize.css";
 import "./styles/main.scss";
 
-// ------- Ymaps ----------
+// ------- инициализация Ymaps ----------
 const data = require("@/data/consts.json");
 const { ymaps_api } = data;
 
@@ -23,10 +23,26 @@ const YMapsSettings = {
 
 Vue.use(YmapPlugin, YMapsSettings);
 
-// ----------- axios into store as global -----------
+// ----------- делаем доступным axios внутри хранилища -----------
 store.$axios = axios;
 
-// ----------- instance Vue --------
+// ----------- глобальные примеси ---------------
+import { mapActions } from 'vuex';
+
+// глобальный миксин для показа тултипа
+Vue.mixin({
+  methods: {
+    ...mapActions('tooltip', ['showTooltip']),
+    showMessage(objMessage) { 
+      // где objMessage = { type, text }, а type = "error", "info"
+      this.showTooltip(objMessage);
+    }
+  }  
+});
+
+// -----------------------------------
+// ----------- instance Vue ----------
+// -----------------------------------
 new Vue({
   el: "#app",
   router,

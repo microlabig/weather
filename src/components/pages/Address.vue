@@ -1,19 +1,22 @@
 <template lang="pug">
 section.address
     .container
-      .address__title
-          h2 Поиск города
-      .address__element.map
-          address-map
-      .address__result
-          .address__loading(v-if="isLoadingCity")
-              preloader
-          .address__loaded(v-else)
-              router-link(
-                  v-if="isLoadedCity"
-                  :to="{name: 'Weather'}"
-              ).address__link {{currentCity.address || 'Город не найден!'}}
-              .address__link(v-else) Город не найден
+        .address__title
+            h2 Поиск города
+        .address__element.map
+            button(
+              @click="showMessage({type: 'info', text: '12345'})"
+            ) Press
+            address-map
+        .address__result
+            .address__loading(v-if="isLoadingGeoInfo")
+                preloader
+            .address__loaded(v-else)
+                router-link(
+                    v-if="isLoadedGeoInfo"
+                    :to="{name: 'Weather'}"
+                ).address__link {{geoInfo.address || 'Город не найден!'}}
+                .address__link(v-else) Город не найден
 </template>
 
 <script>
@@ -22,36 +25,29 @@ import AddressMap from "../AddressMap";
 import Preloader from "../common/Preloader";
 
 export default {
-  data() {
-    return {
-      markerIcon: {
-        layout: "default#image",
-        imageHref: "./src/assets/geo.png",
-        imageSize: [32, 32],
-        imageOffset: [-16, -32]
-      }
-    };
-  },
   components: {
     AddressMap,
     Preloader
   },
-  methods: {
-    ...mapActions("address", ["getCurrentLocation", "getLocation"]),
-    fetchCity() {
-      this.fetchCityData(this.cityStr);
-    }
-  },
   computed: {
-    ...mapGetters("address", ["getCityData", "getIsLoading", "getIsLoaded"]),
-    isLoadingCity() {
+    ...mapGetters("address", ["getGeoInfo", "getIsLoading", "getIsLoaded"]),
+    // -------------------------
+    // флаг - данные загружаются
+    // -------------------------
+    isLoadingGeoInfo() {
       return this.getIsLoading;
     },
-    isLoadedCity() {
+    // -----------------------
+    // флаг - данные загружены
+    // -----------------------
+    isLoadedGeoInfo() {
       return this.getIsLoaded;
     },
-    currentCity() {
-      return this.getCityData;
+    // --------------
+    // гео-информация
+    // --------------
+    geoInfo() {
+      return this.getGeoInfo;
     }
   }
 };

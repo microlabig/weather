@@ -1,14 +1,17 @@
 const data = require("@/data/consts.json");
 const { weather_api } = data;
 
+const initState = {
+  weather: {},
+  isLoading: false,
+  isLoaded: false
+};
+
 export default {
   namespaced: true,
 
-  state: {
-    weather: {},
-    isLoading: false,
-    isLoaded: false
-  },
+  state: {...initState},
+
   mutations: { // для изменеия в state
     SET_WEATHER: (state, weatherData) => {
       state.weather = { ...state.weather, ...weatherData };
@@ -20,73 +23,45 @@ export default {
       state.isLoaded = flag;
     },
   },
+
   actions: {
-    // метод получения данных
-    async fetchWeatherData({ commit, dispatch }, coordinates) {
-      // const lat = 55.37976654;
-      // const lon = 43.78774518;
+    // -------------------------------
+    // метод получения данных о погоде
+    // -------------------------------
+    async fetchWeatherData({ commit, dispatch }, { lat, lon }) {
       try {
         dispatch('startLoading'); // установим флаги начала загрузки
-        const response = await this.$axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${weather_api}&lang=ru`); // api.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid={your api key}
+        const response = await this.$axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${weather_api}&lang=ru`); // api.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid={your api key}
         commit('SET_IS_LOADING', false); // загрузка прекращена
-        if (response.cod < 400) {
-          commit('SET_IS_LOADED', true);
-          return response.data;
+        if (response && response.status < 400) {
+          commit('SET_IS_LOADED', true); // данные загружены
+          commit('SET_WEATHER', response.data);
+        } else {
+          throw new Error('Ошибка загрузки данных');
         }
-        throw new Error('Ошибка загрузки данных');
       } catch (error) {
         dispatch('storeToInit');
         throw new Error(error.response.data.error || error.response.data.message);
       }
     },
+    // --------------
     // старт загрузки
+    // --------------
     startLoading({ commit }) {
       commit('SET_IS_LOADING', true);
       commit('SET_IS_LOADED', false);
     },
+
+    // -----------------------------------------
     // установка хранилища в начальное состояние
+    // -----------------------------------------
     storeToInit({ commit }) {
-      commit('SET_IS_LOADING', false);
-      commit('SET_IS_LOADED', false);
-      commit('SET_WEATHER', {});
+      commit('SET_IS_LOADING', initState.isLoading);
+      commit('SET_IS_LOADED', initState.isLoaded);
+      commit('SET_WEATHER', {...initState.weather});
     }
-    // // метод получения категорий
-    // async fetchCategories({ commit }) {
-    //     // {commit} - метод из store (деструктуризация)
-    //     try {
-    //         const response = await this.$axios.get('/categories');
-    //         commit('SET_CATEGORIES', response.data.reverse()); // вызовим мутацию и получим ответ в response.data
-    //         return response;
-    //     } catch (error) {
-    //         throw new Error(error.response.data.error || error.response.data.message);
-    //     }
-    // },
-
-    // // метод удаления категории с сервера и из store
-    // async removeCategory({ commit }, categoryId) {
-    //     try {
-    //         const response = await this.$axios.delete(`/categories/${categoryId}`);
-    //         commit('REMOVE_CATEGORY', categoryId); // categoryId (а не response.data) т.к. нам не нужен обрабатывать ответ от сервера
-    //         return response;
-    //     } catch (error) {
-    //         throw new Error(error.response.data.error || error.response.data.message);
-    //     }
-    // },
-
-    // // метод изменения имени категории на сервее и в store
-    // async editNameCategory({ commit }, category) {
-    //     try {
-    //         const response = await this.$axios.post(`/categories/${category.id}`, {
-    //             title: category.category
-    //         });
-
-    //         commit('EDIT_NAME_CATEGORY', category); // categoryId (а не response.data) т.к. нам не нужен обрабатывать ответ от сервера
-    //         return response;
-    //     } catch (error) {
-    //         throw new Error(error.response.data.error || error.response.data.message);
-    //     }
-    // }
   },
+  
   getters: {
     getWeatherData: (store) => store.weather,
     getIsLoading: (store) => store.isLoading,
@@ -116,7 +91,7 @@ export default {
     "temp_min": 295.15, // Минимальная температура на данный момент. Это минимальная наблюдаемая в настоящее время температура (в пределах крупных мегаполисов и городских районов). Единица по умолчанию: Кельвин, Метрика: Цельсий, Империал: Фаренгейт.
     "temp_max": 296.15, // Максимальная температура на данный момент. Это максимальная наблюдаемая в настоящее время температура (в пределах крупных мегаполисов и городских районов). Единица по умолчанию: Кельвин, Метрика: Цельсий, Империал: Фаренгейт.
     "pressure": 1011, // давление
-    "humidity": 78 // влыжность
+    "humidity": 78 // влажность
   },
   "visibility": 10000, // видимость
   "wind": {
@@ -137,6 +112,52 @@ export default {
   "timezone": 10800, // Сдвиг в секундах от UTC
   "id": 529315, // ID города
   "name": "Marinki", // Название города
+  "cod": 200
+}
+
+{
+  "coord": {
+    "lon": 43.77,
+    "lat": 55.38
+  },
+  "weather": [
+    {
+      "id": 500,
+      "main": "Rain",
+      "description": "небольшой дождь",
+      "icon": "10n"
+    }
+  ],
+  "base": "stations",
+  "main": {
+    "temp": 292.3,
+    "feels_like": 294.68,
+    "temp_min": 292.3,
+    "temp_max": 292.3,
+    "pressure": 1006,
+    "humidity": 92,
+    "sea_level": 1006,
+    "grnd_level": 992
+  },
+  "wind": {
+    "speed": 0.48,
+    "deg": 32
+  },
+  "rain": {
+    "1h": 0.36
+  },
+  "clouds": {
+    "all": 100
+  },
+  "dt": 1594667001,
+  "sys": {
+    "country": "RU",
+    "sunrise": 1594600874,
+    "sunset": 1594661984
+  },
+  "timezone": 10800,
+  "id": 469933,
+  "name": "Выездное",
   "cod": 200
 }
 */
