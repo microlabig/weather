@@ -1,9 +1,9 @@
-import { fetchWeatherDataOnCurrentDay } from '@/api/openweather';
+import { fetchWeatherDataOnCurrentDay } from "@/api/openweather";
 
 const initState = {
-  weather: {},      // данные о погоде
+  weather: {}, // данные о погоде
   isLoading: false, // флаг процесса загрузки данных
-  isLoaded: false   // флаг успешно загруженных данных
+  isLoaded: false // флаг успешно загруженных данных
 };
 
 export default {
@@ -11,7 +11,8 @@ export default {
 
   state: { ...initState },
 
-  mutations: { // для изменения в state
+  mutations: {
+    // для изменения в state
     SET_WEATHER: (state, weatherData) => {
       state.weather = { ...state.weather, ...weatherData };
     },
@@ -20,7 +21,7 @@ export default {
     },
     SET_IS_LOADED: (state, flag) => {
       state.isLoaded = flag;
-    },
+    }
   },
 
   actions: {
@@ -29,13 +30,15 @@ export default {
     // -------------------------------
     async fetchWeatherDaily({ commit, dispatch }, { lat, lon }) {
       try {
-        dispatch('startLoading'); // установим флаги начала загрузки
+        dispatch("startLoading"); // установим флаги начала загрузки
         const response = await fetchWeatherDataOnCurrentDay({ lat, lon }); // запросим данные о погоде на текущий день
-        commit('SET_WEATHER', response.data); // сохраним данные в стор
-        dispatch('endSuccessLoading');
+        commit("SET_WEATHER", response.data); // сохраним данные в стор
+        dispatch("endSuccessLoading");
       } catch (error) {
-        dispatch('storeToInit');
-        throw new Error(error.response.data.error || error.response.data.message);
+        dispatch("storeToInit");
+        throw new Error(
+          error.response.data.error || error.response.data.message
+        );
       }
     },
 
@@ -43,35 +46,34 @@ export default {
     // старт загрузки данных
     // ---------------------
     startLoading({ commit }) {
-      commit('SET_IS_LOADING', true); // загрузка началась
-      commit('SET_IS_LOADED', false); // данные еще не загружены
+      commit("SET_IS_LOADING", true); // загрузка началась
+      commit("SET_IS_LOADED", false); // данные еще не загружены
     },
 
     // ----------------------------------
     // успешное окончание загрузки данных
     // ----------------------------------
     endSuccessLoading({ commit }) {
-      commit('SET_IS_LOADING', false); // загрузка прекращена
-      commit('SET_IS_LOADED', true);   // данные загружены
+      commit("SET_IS_LOADING", false); // загрузка прекращена
+      commit("SET_IS_LOADED", true); // данные загружены
     },
-    
+
     // -----------------------------------------
     // установка хранилища в начальное состояние
     // -----------------------------------------
     storeToInit({ commit }) {
-      commit('SET_IS_LOADING', initState.isLoading);
-      commit('SET_IS_LOADED', initState.isLoaded);
-      commit('SET_WEATHER', { ...initState.weather });
+      commit("SET_IS_LOADING", initState.isLoading);
+      commit("SET_IS_LOADED", initState.isLoaded);
+      commit("SET_WEATHER", { ...initState.weather });
     }
   },
 
   getters: {
-    getWeatherData: (store) => store.weather,
-    getIsLoading: (store) => store.isLoading,
-    getIsLoaded: (store) => store.isLoaded
+    getWeatherData: store => store.weather,
+    getIsLoading: store => store.isLoading,
+    getIsLoaded: store => store.isLoaded
   }
-}
-
+};
 
 /*
 {
@@ -161,6 +163,53 @@ export default {
   "timezone": 10800,
   "id": 469933,
   "name": "Выездное",
+  "cod": 200
+}
+
+currentWeather = {
+  "coord": {
+    "lon": 37.62,
+    "lat": 55.75
+  },
+  "weather": [
+    {
+      "id": 520,
+      "main": "Rain",
+      "description": "небольшой проливной дождь",
+      "icon": "09n"
+    }
+  ],
+  "base": "stations",
+  "main": {
+    "temp": 289.19,
+    "feels_like": 289.79,
+    "temp_min": 288.15,
+    "temp_max": 289.82,
+    "pressure": 1001,
+    "humidity": 100
+  },
+  "visibility": 7000,
+  "wind": {
+    "speed": 2,
+    "deg": 130
+  },
+  "rain": {
+    "1h": 3.05
+  },
+  "clouds": {
+    "all": 75
+  },
+  "dt": 1594837715,
+  "sys": {
+    "type": 1,
+    "id": 9029,
+    "country": "RU",
+    "sunrise": 1594775179,
+    "sunset": 1594836257
+  },
+  "timezone": 10800,
+  "id": 524901,
+  "name": "Москва",
   "cod": 200
 }
 */

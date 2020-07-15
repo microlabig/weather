@@ -1,5 +1,7 @@
 <template lang="pug">
 .weather__day
+    pre isLoadedWeather = {{isLoadedWeather}}
+    pre currentWeather = {{currentWeather}}
     .weather__result(v-if="isLoadedWeather")
         .weather__title
             h2.weather__header Погода на 
@@ -7,7 +9,6 @@
                 span в городе 
                 span.weather__city {{currentWeather.name}}
         .weather__info
-            pre {{currentWeather}}
             p 5&deg;
     .weather__result(v-else)
         h2.weather__title Сервер не отвечает
@@ -16,11 +17,10 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import { getCurrentDate, getDayOfWeek } from "@/helpers";
-import { defaultCoordinates } from "@/api/ymaps";
 
 export default {
   computed: {
-    ...mapGetters("weather", ["getWeatherData", "getIsLoaded"]),
+    ...mapGetters("weather", ["getIsLoaded", "getWeatherData"]),
     // -----------------------
     // флаг - данные загружены
     // -----------------------
@@ -44,14 +44,6 @@ export default {
     // -----------
     currentDayOfWeek() {
       return getDayOfWeek(new Date());
-    }
-  },
-  async mounted() {
-    // запрос информации о погоде
-    try {
-      await this.fetchWeatherDaily();
-    } catch(error) {
-      this.showMessage({type: 'error', text: 'Ошибка запроса данных'})
     }
   }
 };

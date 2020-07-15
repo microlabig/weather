@@ -2,8 +2,10 @@
 section.weather
     .container
         .weather__data(v-if="isLoadingWeather")
+            pre isLoadingWeather = {{isLoadingWeather}}
             preloader
         .weather__data(v-else)
+            pre isLoadingWeather = {{isLoadingWeather}}
             weather-day
         weather-nav
 </template>
@@ -23,20 +25,28 @@ export default {
   },
   computed: {
     ...mapGetters("weather", ["getIsLoading"]),
+    ...mapGetters("address", ["getGeoInfo"]),
     // -------------------------
     // флаг - данные загружаются
     // -------------------------
     isLoadingWeather() {
       return this.getIsLoading;
+    },
+    // ------------------------------
+    // информация о населенном пункте
+    // ------------------------------
+    geoInfo() {
+      return this.getGeoInfo;
     }
   },
   methods: {
     ...mapActions("weather", ["fetchWeatherDaily"])
   },
-  async mounted() {
+  async created() {
     // запрос информации о погоде
     try {
-      await this.fetchWeatherDaily();
+      const { lat, lon } = this.geoInfo;
+      await this.fetchWeatherDaily({ lat, lon });
     } catch (error) {
       this.showMessage({ type: "error", text: "Ошибка запроса данных" });
     }

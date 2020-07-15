@@ -1,10 +1,8 @@
-import { geocodeBack, getBrowserLocation } from "@/api/ymaps";
+import { defaultCoordinates, geocodeBack, getBrowserLocation } from "@/api/ymaps";
 
 const initState = {
   geoObject: {      // геообъект
-    address: null,  // адрес
-    lat: null,      // широта
-    lon: null       // долгота
+    ...defaultCoordinates
   },
   isLoading: false, // флаг процесса загрузки данных
   isLoaded: false   // флаг успешно загруженных данных

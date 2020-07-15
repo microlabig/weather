@@ -16,12 +16,12 @@ export default {
     return {
       links: [
         {
-          to: "Weather",
-          text: "Погода на 10 дней"
-        },
-        {
           to: "Address",
           text: "Настроить город"
+        },
+        {
+          to: "Weather",
+          text: "Погода на 10 дней"
         }
       ]
     };
