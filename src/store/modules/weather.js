@@ -1,18 +1,17 @@
-const data = require("@/data/consts.json");
-const { weather_api } = data;
+import { fetchWeatherDataOnCurrentDay } from '@/api/openweather';
 
 const initState = {
-  weather: {},
-  isLoading: false,
-  isLoaded: false
+  weather: {},      // данные о погоде
+  isLoading: false, // флаг процесса загрузки данных
+  isLoaded: false   // флаг успешно загруженных данных
 };
 
 export default {
   namespaced: true,
 
-  state: {...initState},
+  state: { ...initState },
 
-  mutations: { // для изменеия в state
+  mutations: { // для изменения в state
     SET_WEATHER: (state, weatherData) => {
       state.weather = { ...state.weather, ...weatherData };
     },
@@ -28,40 +27,44 @@ export default {
     // -------------------------------
     // метод получения данных о погоде
     // -------------------------------
-    async fetchWeatherData({ commit, dispatch }, { lat, lon }) {
+    async fetchWeatherDaily({ commit, dispatch }, { lat, lon }) {
       try {
         dispatch('startLoading'); // установим флаги начала загрузки
-        const response = await this.$axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${weather_api}&lang=ru`); // api.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid={your api key}
-        commit('SET_IS_LOADING', false); // загрузка прекращена
-        if (response && response.status < 400) {
-          commit('SET_IS_LOADED', true); // данные загружены
-          commit('SET_WEATHER', response.data);
-        } else {
-          throw new Error('Ошибка загрузки данных');
-        }
+        const response = await fetchWeatherDataOnCurrentDay({ lat, lon }); // запросим данные о погоде на текущий день
+        commit('SET_WEATHER', response.data); // сохраним данные в стор
+        dispatch('endSuccessLoading');
       } catch (error) {
         dispatch('storeToInit');
         throw new Error(error.response.data.error || error.response.data.message);
       }
     },
-    // --------------
-    // старт загрузки
-    // --------------
+
+    // ---------------------
+    // старт загрузки данных
+    // ---------------------
     startLoading({ commit }) {
-      commit('SET_IS_LOADING', true);
-      commit('SET_IS_LOADED', false);
+      commit('SET_IS_LOADING', true); // загрузка началась
+      commit('SET_IS_LOADED', false); // данные еще не загружены
     },
 
+    // ----------------------------------
+    // успешное окончание загрузки данных
+    // ----------------------------------
+    endSuccessLoading({ commit }) {
+      commit('SET_IS_LOADING', false); // загрузка прекращена
+      commit('SET_IS_LOADED', true);   // данные загружены
+    },
+    
     // -----------------------------------------
     // установка хранилища в начальное состояние
     // -----------------------------------------
     storeToInit({ commit }) {
       commit('SET_IS_LOADING', initState.isLoading);
       commit('SET_IS_LOADED', initState.isLoaded);
-      commit('SET_WEATHER', {...initState.weather});
+      commit('SET_WEATHER', { ...initState.weather });
     }
   },
-  
+
   getters: {
     getWeatherData: (store) => store.weather,
     getIsLoading: (store) => store.isLoading,

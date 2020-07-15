@@ -5,7 +5,7 @@ main.weather
 </template>
 
 <script>
-import Tooltip from "./components/mixins/Tooltip";
+import Tooltip from "./components/Tooltip";
 export default {
     components: {
         Tooltip

@@ -7,16 +7,16 @@ yandex-map(
     @click="yMapClick"
     class="ymaps"
 )
-    ymap-marker(
-        marker-id="123" 
-        :coords="geoInfo | getCoords"
-        :icon="markerIcon"
-    )
+  ymap-marker(
+      marker-id="123" 
+      :coords="geoInfo | getCoords"
+      :icon="markerIcon"
+  )
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import { defaultCoords } from "@/helpers";
+import { defaultCoordinates } from "@/api/ymaps";
 
 export default {
   data() {
@@ -31,13 +31,13 @@ export default {
     };
   },
   methods: {
-    ...mapActions("address", ["getCurrentLocation", "getLocation"]),
+    ...mapActions("address", ["fetchCurrentLocation", "fetchLocation"]),
     // ------------------------------
     // обработчик инициализации карты
     // ------------------------------
     async yMapWasInitialized(map) {
       // получить текущую позицию браузера
-      await this.getCurrentLocation();
+      await this.fetchCurrentLocation();
       // найдем элемент поиска населенного пункта
       const searchControl = map.controls.get("searchControl"); // компонент поиска города на ymaps
       // обработчик по выбору города из поиска
@@ -49,7 +49,7 @@ export default {
           .getCoordinates()
           .filter((item, index) => index < 2); // определим координаты найденного населенного пункта (в массиве также есть третий аргумент - объект, он нам не нужен)
         searchControl.hideResult(); // скрыть стандартные результаты поиска
-        this.getLocation(coords); // обновить координаты и название населенного пункта в хранилище
+        this.fetchLocation(coords); // обновить координаты и название населенного пункта в хранилище
       });
     },
     // -------------------------------------------------------------
@@ -57,12 +57,12 @@ export default {
     // -------------------------------------------------------------
     yMapClick(e) {
       const coords = e.get("coords");
-      this.getLocation(coords);
+      this.fetchLocation(coords);
     }
   },
   filters: {
-    getCoords(obj) {
-      return [obj.lat || defaultCoords.lat, obj.lon || defaultCoords.lon];
+    getCoords({lat, lon}) {
+      return [lat || defaultCoordinates.lat, lon || defaultCoordinates.lon];
     }
   },
   computed: {
@@ -76,7 +76,7 @@ export default {
 
 <style lang="scss">
   .ymaps {
-    width: 500px;
-    height: 500px;
+    width: 100%;
+    height: calc(100vh - 150px);
   }
 </style>

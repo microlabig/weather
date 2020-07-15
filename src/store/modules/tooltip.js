@@ -1,7 +1,7 @@
 const INFO_TYPE = "info";       // тип сообщения - информационное
 const ERROR_TYPE = "error";     // тип сообщения - ошибка
-const INFO_COLOR = "#00ff00"; 
-const ERROR_COLOR = "#ff0000";
+const INFO_COLOR = "#00ff00";   // цвет информационного сообщения
+const ERROR_COLOR = "#ff0000";  // цвет сообщения ошибки
 const DELAY = 3500;             // задержка показа сообщения
 
 const initState = {

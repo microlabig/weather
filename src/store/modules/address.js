@@ -1,13 +1,13 @@
-import { geocodeBack, getBrowserLocation } from "@/helpers";
+import { geocodeBack, getBrowserLocation } from "@/api/ymaps";
 
 const initState = {
-  geoObject: {
-    address: null,
-    lat: null,
-    lon: null
+  geoObject: {      // геообъект
+    address: null,  // адрес
+    lat: null,      // широта
+    lon: null       // долгота
   },
-  isLoading: false,
-  isLoaded: false
+  isLoading: false, // флаг процесса загрузки данных
+  isLoaded: false   // флаг успешно загруженных данных
 };
 
 export default {
@@ -33,75 +33,62 @@ export default {
     // -----------------------------
     // поиск текущего местоположения
     // -----------------------------
-    async getCurrentLocation({ commit, dispatch }) {
+    async fetchCurrentLocation({ commit, dispatch }) {
       try {
         dispatch("startLoading");
         const {
           coords: { latitude, longitude }
-        } = await getBrowserLocation();
-        
+        } = await getBrowserLocation(); // получим данные из браузера о положении пользователя
+        // запросим адрес населенного пункта по координатам
         const cityAddress = await geocodeBack([latitude, longitude]);
-
+        // запишем данные в стор
         commit("SET_CITY", {
           lat: latitude,
           lon: longitude,
           address: cityAddress
         });
-        commit('SET_IS_LOADED', true)
-        commit("SET_IS_LOADING", false);
+        dispatch('endSuccessLoading');
       } catch (error) {
         dispatch("storeToInit");
-        throw new Error(
-          error.response.data.error || error.response.data.message
-        );
+        throw new Error(error.response.data.error || error.response.data.message);
       }
     },
 
     // -----------------------------
     // поиск местоположения по карте
     // -----------------------------
-    async getLocation({ commit, dispatch }, coords) {
+    async fetchLocation({ commit, dispatch }, coords) {
       try {
         dispatch("startLoading");
-        
+        // запросим адрес населенного пункта по координатам
         const address = await geocodeBack(coords);
-
+        // сохраним данные в стор
         commit("SET_CITY", {
           lat: coords[0],
           lon: coords[1],
           address
         });
-        commit('SET_IS_LOADED', true)
-        commit("SET_IS_LOADING", false);
+        dispatch('endSuccessLoading');
       } catch (error) {
         dispatch("storeToInit");
-        throw new Error(
-          error.response.data.error || error.response.data.message
-        );
+        throw new Error(error.response.data.error || error.response.data.message);
       }
     },
 
-    // ----------------------
-    // метод получения данных
-    // ----------------------
-    async fetchCityName({ commit, dispatch }, str) {
-      try {
-        dispatch("startLoading");
-
-      } catch (error) {
-        dispatch("storeToInit");
-        throw new Error(
-          error.response.data.error || error.response.data.message
-        );
-      }
-    },
-
-    // --------------
-    // старт загрузки
-    // --------------
+    // ---------------------
+    // старт загрузки данных
+    // ---------------------
     startLoading({ commit }) {
-      commit("SET_IS_LOADING", true);
-      commit("SET_IS_LOADED", false);
+      commit("SET_IS_LOADING", true);   // загрузка началась
+      commit("SET_IS_LOADED", false);   // данные еще не загружены
+    },
+
+    // ----------------------------------
+    // успешное окончание загрузки данных
+    // ----------------------------------
+    endSuccessLoading({ commit }) {
+      commit('SET_IS_LOADING', false); // загрузка прекращена
+      commit('SET_IS_LOADED', true);   // данные загружены
     },
 
     // -----------------------------------------

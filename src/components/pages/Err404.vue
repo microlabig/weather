@@ -4,7 +4,3 @@
         p Такой страницы не существует
         router-link(to='/') На главную
 </template>
-
-<script></script>
-
-<style lang="scss"></style>
