@@ -18,6 +18,17 @@ export const getCurrentDate = () => {
 export const getDayOfWeek = (timeStamp) => { // входной параметр - дата в формате timestamp
   const dayList = ['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'];
   const day = timeStamp.getDay();
-
+    getTime(timeStamp);
   return dayList.filter((_, idx) => idx === day)[0];
 };
+
+// -------------------------------
+// получение времени из таймстампа
+// -------------------------------
+export const getTime = (timeStamp, gmt = 0) => {
+  const hours = timeStamp.getHours() + gmt;
+  const formatedHours = hours < 10 ? "0" + hours : hours;
+  const minutes = timeStamp.getMinutes();
+
+  return `${formatedHours}:${minutes}`;
+}

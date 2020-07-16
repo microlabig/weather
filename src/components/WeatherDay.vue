@@ -1,17 +1,12 @@
 <template lang="pug">
 .weather__day
-    pre isLoadedWeather = {{isLoadedWeather}}
-    pre currentWeather = {{currentWeather}}
-    .weather__result(v-if="isLoadedWeather")
-        .weather__title
-            h2.weather__header Погода на 
-                span.weater_date {{currentDate}}, {{currentDayOfWeek}} 
-                span в городе 
-                span.weather__city {{currentWeather.name}}
-        .weather__info
-            p 5&deg;
-    .weather__result(v-else)
-        h2.weather__title Сервер не отвечает
+    .weather__title
+        pre {{currentWeather}}
+        h2.weather__city {{currentWeather.name}}, 
+            span.weather__header погода на 
+            span.weater_date {{currentDate}}, {{currentDayOfWeek}} 
+    .weather__info
+        p 5&deg;
 </template>
 
 <script>
@@ -20,13 +15,7 @@ import { getCurrentDate, getDayOfWeek } from "@/helpers";
 
 export default {
   computed: {
-    ...mapGetters("weather", ["getIsLoaded", "getWeatherData"]),
-    // -----------------------
-    // флаг - данные загружены
-    // -----------------------
-    isLoadedWeather() {
-      return this.getIsLoaded;
-    },
+    ...mapGetters("weather", ["getWeatherData"]),
     // -----------------------
     // текущие данные о погоде
     // -----------------------

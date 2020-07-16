@@ -1,10 +1,10 @@
 <template lang="pug">
-.address__linkscontainer
-        router-link(
-            v-if="isLoadedGeoInfo"
-            :to="{name: 'Weather'}"
-        ).address__link {{geoInfo.address || 'Город не найден!'}}
-        p(v-else).address__link Город не найден
+.address__links-container
+    router-link(
+        v-if="isLoadedGeoInfo"
+        :to="{name: 'Weather'}"
+    ).address__link {{geoInfo.address || 'Город не найден!'}}
+    p(v-else).address__link Город не найден
 </template>
 
 <script>

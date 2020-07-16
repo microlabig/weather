@@ -2,11 +2,12 @@
 section.weather
     .container
         .weather__data(v-if="isLoadingWeather")
-            pre isLoadingWeather = {{isLoadingWeather}}
             preloader
         .weather__data(v-else)
-            pre isLoadingWeather = {{isLoadingWeather}}
-            weather-day
+            .weather__result(v-if="isLoadedWeather")
+                weather-day
+            .weather__result(v-else)
+                h2.weather__title Сервер не отвечает
         weather-nav
 </template>
 
@@ -24,13 +25,19 @@ export default {
     WeatherNav
   },
   computed: {
-    ...mapGetters("weather", ["getIsLoading"]),
+    ...mapGetters("weather", ["getIsLoading", "getIsLoaded"]),
     ...mapGetters("address", ["getGeoInfo"]),
     // -------------------------
     // флаг - данные загружаются
     // -------------------------
     isLoadingWeather() {
       return this.getIsLoading;
+    },
+    // -----------------------
+    // флаг - данные загружены
+    // -----------------------
+    isLoadedWeather() {
+      return this.getIsLoaded;
     },
     // ------------------------------
     // информация о населенном пункте
