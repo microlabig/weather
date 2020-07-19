@@ -1,7 +1,5 @@
 const path = require("path");
 const webpack = require("webpack");
-const { VueLoaderPlugin } = require("vue-loader");
-//const { VuetifyLoaderPlugin } = require("vuetify-loader");
 
 const isProductionBuild = process.env.NODE_ENV === "production";
 
@@ -29,22 +27,13 @@ module.exports = {
             : { loader: "css-loader", options: { sourceMap: true } },
           isProductionBuild
             ? "sass-loader"
-            : {
-                loader: "sass-loader",
-                options: {
-                  implementation: require("sass"),
-                  sassOptions: {
-                    fiber: require("fibers"),
-                    sourceMap: true
-                  }
-                }
-              }
+            : { loader: "sass-loader", options: { sourceMap: true } }
         ]
       },
-      // {
-      //   test: /\.sass$/,
-      //   use: ["vue-style-loader", "css-loader", "sass-loader?indentedSyntax"]
-      // },
+      {
+        test: /\.sass$/,
+        use: ["vue-style-loader", "css-loader", "sass-loader?indentedSyntax"]
+      },
       {
         test: /\.vue$/,
         loader: "vue-loader",
@@ -53,32 +42,11 @@ module.exports = {
             // Since sass-loader (weirdly) has SCSS as its default parse mode, we map
             // the "scss" and "sass" values for the lang attribute to the right configs here.
             // other preprocessors should work out of the box, no loader config like this necessary.
-            scss: [
-              "vue-style-loader",
-              "css-loader",
-              {
-                loader: "sass-loader",
-                options: {
-                  implementation: require("sass"),
-                  sassOptions: {
-                    fiber: require("fibers")
-                  }
-                }
-              }
-            ],
+            scss: ["vue-style-loader", "css-loader", "sass-loader"],
             sass: [
               "vue-style-loader",
               "css-loader",
-              {
-                loader: "sass-loader",
-                options: {
-                  implementation: require("sass"),
-                  sassOptions: {
-                    fiber: require("fibers"),
-                    indentedSyntax: true // optional
-                  }
-                }
-              }
+              "sass-loader?indentedSyntax"
             ]
           }
           // other vue-loader options go here
@@ -86,31 +54,14 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: "babel-loader",
-            options: {
-              presets: ["@babel/preset-env"],
-              plugins: ["@babel/plugin-syntax-dynamic-import"] // динамический импорт и для async/await
-            }
-          }
-          //'eslint-loader'
-        ]
+        loader: "babel-loader",
+        exclude: /node_modules/
       },
       {
         test: /\.(png|jpg|gif|svg)$/,
         loader: "file-loader",
         options: {
           name: "[name].[ext]?[hash]"
-        }
-      },
-      {
-        //test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/, // обращаемся к шрифтам
-        test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/, // обращаемся к шрифтам
-        loaders: "file-loader",
-        options: {
-          name: "[name].[ext]"
         }
       }
     ]
@@ -130,11 +81,7 @@ module.exports = {
   performance: {
     hints: false
   },
-  devtool: "#eval-source-map",
-  plugins: [
-    new VueLoaderPlugin(), 
-    //new VuetifyLoaderPlugin({})
-  ]
+  devtool: "#eval-source-map"
 };
 
 if (process.env.NODE_ENV === "production") {
