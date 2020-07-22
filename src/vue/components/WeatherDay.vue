@@ -2,16 +2,17 @@
 .weather__day
     .weather__title
         pre {{currentWeather}}
-        h2.weather__city {{currentWeather.name}}, 
-            span.weather__header погода на 
+        h2.weather__header Погода на 
             span.weater_date {{currentDate}}, {{currentDayOfWeek}} 
+            span в городе 
+            span.weather__city {{currentWeather.name}}
     .weather__info
         p 5&deg;
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import { getCurrentDate, getDayOfWeek } from "@/helpers";
+import { getCurrentDate, getDayOfWeek } from "~/helpers";
 
 export default {
   computed: {

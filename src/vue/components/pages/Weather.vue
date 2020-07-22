@@ -13,7 +13,7 @@ section.weather
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import { defaultCoordinates } from "@/api/ymaps";
+import { defaultCoordinates } from "~/api/ymaps";
 import Preloader from "../common/Preloader";
 import WeatherDay from "../WeatherDay";
 import WeatherNav from "../WeatherNav";

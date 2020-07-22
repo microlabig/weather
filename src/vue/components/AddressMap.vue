@@ -16,7 +16,7 @@ yandex-map(
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import { defaultCoordinates } from "@/api/ymaps";
+import { defaultCoordinates } from "~/api/ymaps";
 
 export default {
   data() {
@@ -24,7 +24,7 @@ export default {
       markerIcon: {
         // свойства кастомной метки на карте
         layout: "default#image",
-        imageHref: "./src/assets/geo.png",
+        imageHref: "./assets/img/icons/geo.png",
         imageSize: [32, 32],
         imageOffset: [-16, -32]
       }

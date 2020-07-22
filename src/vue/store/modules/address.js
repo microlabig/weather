@@ -1,4 +1,4 @@
-import { defaultCoordinates, geocodeBack, getBrowserLocation } from "@/api/ymaps";
+import { defaultCoordinates, geocodeBack, getBrowserLocation } from "~/api/ymaps";
 
 const initState = {
   geoObject: {      // геообъект

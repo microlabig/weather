@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const { weather_api } = require("@/data/consts.json");
-// const response = {...require('@/data/weather.json'), status: 200};
+const { weather_api } = require("~/data/consts.json");
+// const response = {...require('~V/data/weather.json'), status: 200};
 const parts = ["current", "minutely", "hourly", "daily"];
 
 // -------------------------------------

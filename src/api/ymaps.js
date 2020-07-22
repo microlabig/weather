@@ -5,7 +5,7 @@ import YmapPlugin from "vue-yandex-maps";
 // инициализация Ymaps 
 // -------------------
 export default () => {
-    const { ymaps_api } = require("@/data/consts.json");
+    const { ymaps_api } = require("~/data/consts.json");
     
     const YMapsSettings = {
         apiKey: ymaps_api,

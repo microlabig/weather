@@ -1,4 +1,4 @@
-import { fetchWeatherDataOnCurrentDay } from "@/api/openweather";
+import { fetchWeatherDataOnCurrentDay } from "~/api/openweather";
 
 const initState = {
   weather: {}, // данные о погоде
