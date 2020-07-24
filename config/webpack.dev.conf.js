@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.conf');
-const { UnusedFilesWebpackPlugin } = require('unused-files-webpack-plugin');  // Чтобы знать о неиспользуемых файлах в проекте
+const { UnusedFilesWebpackPlugin } = require('unused-files-webpack-plugin');  
 
 const devWebpackConfig = merge(baseWebpackConfig, {
     mode: 'development',
@@ -20,6 +20,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
             filename: '[file].map'
         }),
 
+        // для того, чтобы знать о неиспользуемых файлах в проекте
         new UnusedFilesWebpackPlugin({
             failOnUnused: true,
             patterns: ["src/*.*"]

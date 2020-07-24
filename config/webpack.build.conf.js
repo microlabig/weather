@@ -17,6 +17,9 @@ const buildWebpackConfig = merge(baseWebpackConfig, {
                 gifsicle: {
                     optimizationLevel: 2
                 },
+                webp: {
+                    quality: 75
+                },
                 plugins: [
                     // оптимизация jpe?g
                     imageminMozjpeg({

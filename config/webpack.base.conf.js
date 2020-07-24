@@ -24,6 +24,8 @@ const PAGES = fs
   .readdirSync(PAGES_DIR)
   .filter(filename => filename.endsWith(".pug")); // массив pug-страниц проекта
 
+const isDevMode = process.env.NODE_ENV === "development"; // флаг режима запуска скриптов разработки
+
 module.exports = {
   externals: {
     // для получения доступа к вышестоящей константе PATHS для других конфигов (webpack.build.conf.js и webpack.dev.conf.js)
@@ -31,7 +33,7 @@ module.exports = {
   },
   // точка входа
   entry: {
-    app: ["@babel/polyfill/noConflict", PATHS.src] // Если вам нужно загрузить полифил (@babel/polyfill) более одного раза, используйте @babel/polyfill/noConflict, чтобы обойти предупреждение.
+    app: ["@babel/polyfill/noConflict", `${PATHS.src}/main`] // Если вам нужно загрузить полифил (@babel/polyfill) более одного раза, используйте @babel/polyfill/noConflict, чтобы обойти предупреждение.
     // lk: ["@babel/polyfill/noConflict", `${PATHS.src}/lk.js`] // напр., личный кабинет
   },
   // точка выхода
@@ -49,7 +51,7 @@ module.exports = {
         exclude: "/node_modules/", // исключаем папку node_modules
         cache: true,
         parallel: true,
-        sourceMap: false
+        sourceMap: isDevMode
       })
     ],
     // разделять файлы js (напр., vendor.js, app.js, lk.js, ...)
@@ -69,12 +71,12 @@ module.exports = {
   module: {
     // правила (массив объектов) преобразования определённых файлов соответствующими загрузчиками
     rules: [
-      /* {
-                enforce: 'pre',
-                test: /\.(js|vue)$/,
-                loader: 'eslint-loader',
-                exclude: /node_modules/
-            },   */
+      // {
+      //   enforce: 'pre',
+      //   test: /\.(js|vue)$/,
+      //   loader: 'eslint-loader',
+      //   exclude: /node_modules/
+      // },
 
       // изображения
       {
@@ -109,7 +111,7 @@ module.exports = {
           }
         ]
       },
-      
+
       // векторные изображения
       {
         test: /\.svg$/,
@@ -147,7 +149,7 @@ module.exports = {
             loader: "babel-loader",
             options: {
               presets: ["@babel/preset-env"],
-              plugins: ["@babel/plugin-syntax-dynamic-import"] // динамический импорт и для async/await
+              plugins: ["@babel/plugin-syntax-dynamic-import"] // динамический импорт (для async/await)
             }
           }
           //'eslint-loader'
@@ -171,56 +173,65 @@ module.exports = {
         ]
       },
 
-      // SCSS
+      // SCSS, SASS, CSS
       {
-        test: /\.scss$/, // обработка scss
+        test: /\.s?[ac]ss$/, // обработка scss
         use: [
           // use - SCSS-файлы обрабатываются последовательно несколькими загрузчиками, поэтому вместо свойства loader здесь используется свойство use
           // в случае с несколькими загрузчиками, они работают в следующем порядке: снизу вверх или справа налево
           "style-loader",
-          MiniCssExtractPlugin.loader,
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              hmr: isDevMode // включение hmr при редактировании стилей
+            }
+          },
           {
             loader: "css-loader",
-            options: { sourceMap: true }
+            options: { sourceMap: isDevMode }
           },
           {
             loader: "postcss-loader",
             options: {
-              sourceMap: true,
+              sourceMap: isDevMode,
               config: {
-                path: `./postcss.config.js`
+                path: "./postcss.config.js"
               }
             }
           },
           {
             loader: "sass-loader",
-            options: { sourceMap: true }
-          }
-        ]
-      },
-
-      // CSS
-      {
-        test: /\.css$/, // обработка css
-        use: [
-          "style-loader",
-          MiniCssExtractPlugin.loader,
-          {
-            loader: "css-loader",
-            options: { sourceMap: true }
-          },
-          {
-            loader: "postcss-loader",
-            options: {
-              sourceMap: true,
-              config: {
-                path: `./postcss.config.js`
-              }
-            }
+            options: { sourceMap: isDevMode }
           }
         ]
       }
 
+      // // CSS
+      // {
+      //   test: /\.css$/, // обработка css
+      //   use: [
+      //     "style-loader",
+      //     {
+      //       loader: MiniCssExtractPlugin.loader,
+      //       options: {
+      //         hmr: isDevMode // включение hmr при редактировании стилей
+      //       }
+      //     },
+      //     {
+      //       loader: "css-loader",
+      //       options: { sourceMap: isDevMode }
+      //     },
+      //     {
+      //       loader: "postcss-loader",
+      //       options: {
+      //         sourceMap: isDevMode,
+      //         config: {
+      //           path: "./postcss.config.js"
+      //         }
+      //       }
+      //     }
+      //   ]
+      // }
     ]
   },
   // допустимые замены
@@ -238,25 +249,25 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: `${PATHS.assets}css/[name].[hash].css` // на выходе будет app.[hash].css
     }),
-    /* 
-        // для .html
-        new HtmlWebpackPlugin({
-            // https://github.com/jaketrent/html-webpack-template/blob/legacy/index.html
-            template: `${PATHS.src}/index.html`,
-            filename: './index.html',
-            inject: false // false - отключает автоматическую вставку css (<link rel=...> в head) и js (<script...> вниз body)
-        }),
-    */
+
+    // // для .html
+    // new HtmlWebpackPlugin({
+    //     // https://github.com/jaketrent/html-webpack-template/blob/legacy/index.html
+    //     template: `${PATHS.src}/index.html`,
+    //     filename: './index.html',
+    //     inject: false // false - отключает автоматическую вставку css (<link rel=...> в head) и js (<script...> вниз body)
+    // }),
+
     new CopyWebpackPlugin([
       // плагин копирует файлы из папки from в папку to (относительно output.path)
       {
         from: `${PATHS.src}/${PATHS.assets}img`,
         to: `${PATHS.assets}img`
       },
-    //   { // шрифты устанавливаются выше
-    //     from: `${PATHS.src}/${PATHS.assets}fonts`,
-    //     to: `${PATHS.assets}fonts`
-    //   },
+      //   { // шрифты устанавливаются выше
+      //     from: `${PATHS.src}/${PATHS.assets}fonts`,
+      //     to: `${PATHS.assets}fonts`
+      //   },
       {
         from: `${PATHS.src}/static`,
         to: ""
