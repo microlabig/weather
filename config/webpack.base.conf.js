@@ -258,21 +258,23 @@ module.exports = {
     //     inject: false // false - отключает автоматическую вставку css (<link rel=...> в head) и js (<script...> вниз body)
     // }),
 
-    new CopyWebpackPlugin([
-      // плагин копирует файлы из папки from в папку to (относительно output.path)
-      {
-        from: `${PATHS.src}/${PATHS.assets}img`,
-        to: `${PATHS.assets}img`
-      },
-      //   { // шрифты устанавливаются выше
-      //     from: `${PATHS.src}/${PATHS.assets}fonts`,
-      //     to: `${PATHS.assets}fonts`
-      //   },
-      {
-        from: `${PATHS.src}/static`,
-        to: ""
-      }
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [
+        // плагин копирует файлы из папки from в папку to (относительно output.path)
+        {
+          from: `${PATHS.src}/${PATHS.assets}img`,
+          to: `${PATHS.assets}img`
+        },
+        //   { // шрифты устанавливаются выше
+        //     from: `${PATHS.src}/${PATHS.assets}fonts`,
+        //     to: `${PATHS.assets}fonts`
+        //   },
+        {
+          from: `${PATHS.src}/static`,
+          to: ""
+        }
+      ]
+    }),
 
     new SpriteLoaderPlugin({
       plainSprite: true
