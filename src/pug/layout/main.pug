@@ -7,13 +7,15 @@ html(lang="ru")
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         meta(http-equiv="X-UA-Compatible", content="ie=edge")
+        link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css")
         block stylesheet
         title #{title}
     body
-        .wrapper
-            main.maincontent
-                include ../includes/modules/header              
-                #app
-        include ../includes/modules/footer
+        #app
+        //- .wrapper
+        //-     main.maincontent
+        //-         include ../includes/modules/header              
+        //-         #app
+        //- include ../includes/modules/footer
 
         block script

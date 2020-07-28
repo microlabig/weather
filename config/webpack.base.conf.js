@@ -165,7 +165,21 @@ module.exports = {
             loader: "vue-loader",
             options: {
               loader: {
-                scss: "vue-style-loader!css-loader!sass-loader" // указывает на обработку css-стилей
+                use: [
+                  'vue-style-loader',
+                  'css-loader',
+                  {
+                    loader: 'sass-loader',
+                    options: {
+                      implementation: require('sass'),
+                      sassOptions: {
+                        fiber: require('fibers'),
+                        //indentedSyntax: true // optional - для sAss-файлов
+                      },
+                    },
+                  }
+                ]
+                //scss: "vue-style-loader!css-loader!sass-loader"
               }
             }
           }
@@ -183,7 +197,7 @@ module.exports = {
           {
             loader: MiniCssExtractPlugin.loader,
             options: {
-              hmr: isDevMode // включение hmr при редактировании стилей
+              hmr: isDevMode // включение hmr (hot module replacement) при редактировании стилей
             }
           },
           {
@@ -201,7 +215,15 @@ module.exports = {
           },
           {
             loader: "sass-loader",
-            options: { sourceMap: isDevMode }
+            options: {
+              implementation: require('sass'),
+              sourceMap: isDevMode,
+              sassOptions: {
+                fiber: require('fibers'),
+                //indentedSyntax: true // optional - для sAss-файлов
+              },
+            },
+            //options: { sourceMap: isDevMode }
           }
         ]
       }

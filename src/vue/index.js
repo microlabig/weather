@@ -1,5 +1,6 @@
 import Vue from "vue";
 
+import vuetify from "~V/plugins/vuetify"; // плагин vuetify
 import router from "./router"; // роутер
 import store from "./store"; // хранилище
 
@@ -16,6 +17,7 @@ ymapsInit(); // инициализируем карты
 // -----------------------------------
 new Vue({
   el: "#app",
+  vuetify,
   router,
   store,
   render: h => h(App)
