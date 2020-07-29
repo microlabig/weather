@@ -25,9 +25,11 @@ main.weather
             ).fill-height
                 v-row(align='center' justify='center')
                     v-col.text-center
-                        v-btn(:href='myResume' icon='' large='' target='_blank')
-                            v-icon(large='') mdi-code-tags
-                        router-view
+                        v-card(
+                            shaped
+                            class="mx-auto"
+                        )
+                            router-view
         v-footer(
             color="indigo"
             app
@@ -35,7 +37,7 @@ main.weather
             span.white--text &copy; {{ new Date().getFullYear() }} &nbsp;
             span
                 v-btn(
-                    :href='myResume'
+                    :href='resumeLink'
                     target='_blank'
                     color="primary"
                 ) by Igor Bezmestin 
@@ -44,6 +46,7 @@ main.weather
 
 <script>
     import Tooltip from "./components/Tooltip";
+    const { resume_link } = require("~/data/consts.json");
 
     export default {
         components: {
@@ -52,7 +55,7 @@ main.weather
         data() {
             return {
                 drawer: null,
-                myResume: 'https://nn.hh.ru/resume/0ffd953fff05649c9c0039ed1f523344466e4c'
+                resumeLink: resume_link
             }
         }
     };

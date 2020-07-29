@@ -1,6 +1,10 @@
 <template lang="pug">
     .preloader
-        p Прелоадер
+        v-progress-circular(
+            :size="50"
+            color="red"
+            indeterminate
+        )
 </template>
 
 <script></script>

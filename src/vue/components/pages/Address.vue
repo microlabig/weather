@@ -1,17 +1,15 @@
 <template lang="pug">
 section.address
     .container
-        h2.address__title Поиск города
+        v-card-text
+          h2.display-1.text--primary.address__title Поиск города
+        .address__element.map
+            address-map
         nav.address__result
             .address__loaded(v-if="isLoadingGeoInfo")
                 preloader
             .address__loaded(v-else)
                 address-result
-        .address__element.map
-            button(
-              @click="showMessage({type: 'info', text: '12345'})"
-            ) Press
-            address-map
 </template>
 
 <script>

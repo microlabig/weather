@@ -75,8 +75,8 @@ export default {
 </script>
 
 <style lang="scss">
-  // .ymaps {
-  //   width: 100%;
-  //   height: calc(100vh - 150px);
-  // }
+  .ymap-container {
+    width: 100%;
+    height: 100%;
+  }
 </style>

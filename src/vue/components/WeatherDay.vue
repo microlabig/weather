@@ -1,11 +1,11 @@
 <template lang="pug">
 .weather__day
     .weather__title
+      v-card-text
+        h2.display-1.text--primary.weather__header {{currentWeather.name}}, 
+            span.weather__city погода на 
+            span.weater_date {{currentDate}}, {{currentDayOfWeek}}
         pre {{currentWeather}}
-        h2.weather__header Погода на 
-            span.weater_date {{currentDate}}, {{currentDayOfWeek}} 
-            span в городе 
-            span.weather__city {{currentWeather.name}}
     .weather__info
         p 5&deg;
 </template>

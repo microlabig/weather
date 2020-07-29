@@ -22,14 +22,10 @@ module.exports = ({ file, options, env }) => ({
     "css-mqpacker": env === "production" ? true : false,
 
     // px -> rem
-    "postcss-pxtorem":
-      env === "production"
-        ? {
-            // px2rem
-            rootValue: 16, // по-умолчанию, размер шрифта 16px
-            propList: ["*", "!*border*"], // игнорировать CSS св-ва, в которых содержится слово "border"
-            selectorBlackList: [/^(html|pug)$/] // игнорировать в html- и pug-файлах
-          }
-        : false
+    "postcss-pxtorem": {
+      rootValue: 16, // по-умолчанию, размер шрифта 16px
+      propList: ["*", "!*border*"], // игнорировать CSS св-ва, в которых содержится слово "border"
+      selectorBlackList: [/^(html|pug)$/] // игнорировать в html- и pug-файлах
+    }
   }
 });

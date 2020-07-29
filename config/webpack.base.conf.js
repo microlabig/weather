@@ -179,7 +179,6 @@ module.exports = {
                     },
                   }
                 ]
-                //scss: "vue-style-loader!css-loader!sass-loader"
               }
             }
           }
@@ -227,33 +226,6 @@ module.exports = {
           }
         ]
       }
-
-      // // CSS
-      // {
-      //   test: /\.css$/, // обработка css
-      //   use: [
-      //     "style-loader",
-      //     {
-      //       loader: MiniCssExtractPlugin.loader,
-      //       options: {
-      //         hmr: isDevMode // включение hmr при редактировании стилей
-      //       }
-      //     },
-      //     {
-      //       loader: "css-loader",
-      //       options: { sourceMap: isDevMode }
-      //     },
-      //     {
-      //       loader: "postcss-loader",
-      //       options: {
-      //         sourceMap: isDevMode,
-      //         config: {
-      //           path: "./postcss.config.js"
-      //         }
-      //       }
-      //     }
-      //   ]
-      // }
     ]
   },
   // допустимые замены
