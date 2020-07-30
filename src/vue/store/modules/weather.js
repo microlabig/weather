@@ -2,6 +2,7 @@ import { fetchWeatherDataOnCurrentDay } from "~/api/openweather";
 
 const initState = {
   weather: {}, // данные о погоде
+  icon: null,
   isLoading: false, // флаг процесса загрузки данных
   isLoaded: false // флаг успешно загруженных данных
 };

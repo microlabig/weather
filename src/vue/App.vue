@@ -25,11 +25,11 @@ main.weather
             ).fill-height
                 v-row(align='center' justify='center')
                     v-col.text-center
-                        v-card(
-                            shaped
-                            class="mx-auto"
-                        )
-                            router-view
+                        //- v-card(
+                        //-     shaped
+                        //-     class="mx-auto"
+                        //- )
+                        router-view
         v-footer(
             color="indigo"
             app

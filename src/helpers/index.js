@@ -25,7 +25,8 @@ export const getDayOfWeek = (timeStamp) => { // входной параметр 
 // -------------------------------
 // получение времени из таймстампа
 // -------------------------------
-export const getTime = (timeStamp, gmt = 0) => {
+export const getTime = (timeStampStr, gmt = 0) => {
+  const timeStamp = new Date(timeStampStr);
   const hours = timeStamp.getHours() + gmt;
   const formatedHours = hours < 10 ? "0" + hours : hours;
   const minutes = timeStamp.getMinutes();
