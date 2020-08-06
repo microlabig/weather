@@ -1,7 +1,9 @@
-import { fetchWeatherDataOnCurrentDay, fetchWeatherIcon} from "~/api/openweather";
+import * as WeatherAPI from "~/api/openweather";
+import * as Help from "~/helpers";
 
 const initState = {
   weather: {}, // данные о погоде
+  weatherOnWeek: [],
   iconDay: null,
   isLoading: false, // флаг процесса загрузки данных
   isLoaded: false // флаг успешно загруженных данных
@@ -25,6 +27,9 @@ export default {
     },
     SET_ICON: (state, icon) => {
       state.iconDay = icon;
+    },
+    SET_WEATHER_ON_WEEK: (state, weatherList) => {
+      state.weatherOnWeek = [...weatherList];
     }
   },
 
@@ -35,10 +40,45 @@ export default {
     async fetchWeatherDaily({ commit, dispatch }, { lat, lon }) {
       try {
         dispatch("startLoading"); // установим флаги начала загрузки
-        const response = await fetchWeatherDataOnCurrentDay({ lat, lon }); // запросим данные о погоде на текущий день
+
+        const response = await WeatherAPI.fetchWeatherDataOnCurrentDay({ lat, lon }); // запросим данные о погоде на текущий день
         commit("SET_WEATHER", response.data); // сохраним данные в стор
-        const iconDay = await fetchWeatherIcon(response.data.weather[0]?.icon); // загрузим иконку 
-        commit("SET_ICON", iconDay); // сохраним данные в стор
+        const iconDaily = await WeatherAPI.fetchWeatherIcon(response.data.weather[0]?.icon); // загрузим иконку
+        commit("SET_ICON", iconDaily); // сохраним данные в стор
+
+        dispatch("endSuccessLoading");
+      } catch (error) {
+        dispatch("storeToInit");
+        throw new Error(
+          error.response.data.error || error.response.data.message
+        );
+      }
+    },
+
+    // -------------------------------
+    // метод получения данных о погоде
+    // -------------------------------
+    async fetchWeatherOnWeek({ commit, dispatch }, { lat, lon }) {
+      try {
+        dispatch("startLoading"); // установим флаги начала загрузки
+
+        const response = await WeatherAPI.fetchWeatherWeek({ lat, lon });
+        const promises = [];
+        response.data.daily.forEach( res => {
+          promises.push(new Promise(async (resolve) => {
+            resolve(await WeatherAPI.fetchWeatherIcon(res.weather[0]?.icon)); // загрузим иконку
+          }))
+          //console.log(Help.getDayOfWeek(res.dt * 1000));
+        });
+        const iconsList = await Promise.allSettled(promises);
+        const weatherWeek = response.data.daily.map( (weather, idx) => {
+          return {
+            ...weather,
+            icon: iconsList[idx].value
+          };
+        });
+        commit("SET_WEATHER_ON_WEEK", weatherWeek); // сохраним данные в стор
+
         dispatch("endSuccessLoading");
       } catch (error) {
         dispatch("storeToInit");
@@ -76,6 +116,7 @@ export default {
 
   getters: {
     getWeatherData: store => store.weather,
+    getWeatherOnWeek: store => store.weatherOnWeek,
     getIsLoading: store => store.isLoading,
     getIsLoaded: store => store.isLoaded,
     getIconDay: store => store.iconDay

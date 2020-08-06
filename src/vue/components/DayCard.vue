@@ -6,8 +6,7 @@ v-card(
         elevation="10"
     ).weather__card.card
     .card__info
-        //- v-img.card__icon
-        weather-day-card-main-info(
+        day-card-main-info(
             :currentWeather="currentWeather"
             :show="show"
         )
@@ -24,20 +23,20 @@ v-card(
                 v-icon {{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}
             v-expand-transition
                 .card__moreinfo(v-show="show")
-                    weather-day-card-more(
+                    day-card-more(
                         :show="show"
                         :currentWeather="currentWeather"
                     )
 </template>
 
 <script>
-import WeatherDayCardMore from "~V/components/WeatherDayCardMore";
-import WeatherDayCardMainInfo from "~V/components/WeatherDayCardMainInfo";
+import DayCardMore from "~V/components/DayCardMore";
+import DayCardMainInfo from "~V/components/DayCardMainInfo";
 
 export default {
   components: {
-    WeatherDayCardMainInfo,
-    WeatherDayCardMore
+    DayCardMainInfo,
+    DayCardMore
   },
   props: {
     currentWeather: {
@@ -60,5 +59,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss"></style>

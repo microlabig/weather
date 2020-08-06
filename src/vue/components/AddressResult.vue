@@ -2,7 +2,7 @@
 .address__links-container
     router-link(
         v-if="isLoadedGeoInfo"
-        :to="{name: 'Weather'}"
+        :to="{name: 'Day'}"
     ).address__link {{geoInfo.address || 'Город не найден!'}}
     p(v-else).address__link Город не найден
 </template>

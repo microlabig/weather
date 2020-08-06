@@ -1,6 +1,8 @@
-import Weather from "~V/components/pages/Weather";
-import Address from "~V/components/pages/Address";
 import Err404 from "~V/components/pages/Err404";
+import Address from "~V/components/pages/Address";
+import Weather from "~V/components/pages/Weather";
+import Day from "~V/components/pages/Day";
+import Week from "~V/components/pages/Week";
 
 export default {
   mode: "history",
@@ -12,16 +14,21 @@ export default {
     },
     {
       path: "/weather",
-      name: "Weather",
-      component: Weather
-      // children: [
-      //     {
-      //         path: ':city',
-      //         name: '', // TODO:
-      //         component: null, // TODO:
-      //         props: true
-      //     }
-      // ]
+      component: Weather,
+
+      children: [
+        {
+          path: "day",
+          name: "Day",
+          component: Day
+        },
+
+        {
+          path: "week",
+          name: "Week",
+          component: Week
+        }
+      ]
     },
     {
       path: "*",

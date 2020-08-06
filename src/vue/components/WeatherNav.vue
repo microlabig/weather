@@ -6,6 +6,7 @@ nav.weather__navigations
             :key="idx"
         ).weather__item
             router-link(
+                v-if="$route.name !== link.to"
                 :to="{name: `${link.to}`}"
             ) {{link.text}}
 </template>
@@ -20,8 +21,12 @@ export default {
           text: "Настроить город"
         },
         {
-          to: "Weather",
-          text: "Погода на 10 дней"
+          to: "Week",
+          text: "Погода на неделю"
+        },
+        {
+          to: "Day",
+          text: "Погода на день"
         }
       ]
     };

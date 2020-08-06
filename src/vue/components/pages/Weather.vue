@@ -5,7 +5,7 @@ section.weather
             preloader
         .weather__data(v-else)
             .weather__result(v-if="isLoadedWeather")
-                weather-day
+                router-view
             .weather__result(v-else)
                 h2.weather__title Сервер не отвечает
         weather-nav
@@ -15,13 +15,11 @@ section.weather
 import { mapActions, mapGetters } from "vuex";
 import { defaultCoordinates } from "~/api/ymaps";
 import Preloader from "../common/Preloader";
-import WeatherDay from "../WeatherDay";
 import WeatherNav from "../WeatherNav";
 
 export default {
   components: {
     Preloader,
-    WeatherDay,
     WeatherNav
   },
   computed: {
@@ -47,13 +45,14 @@ export default {
     }
   },
   methods: {
-    ...mapActions("weather", ["fetchWeatherDaily"])
+    ...mapActions("weather", ["fetchWeatherDaily", "fetchWeatherOnWeek"])
   },
   async created() {
     // запрос информации о погоде
     try {
       const { lat, lon } = this.geoInfo;
-      await this.fetchWeatherDaily({ lat, lon });
+      await this.fetchWeatherDaily({ lat, lon }); // на текущий день
+      await this.fetchWeatherOnWeek({ lat, lon }); // на неделю
     } catch (error) {
       this.showMessage({ type: "error", text: "Ошибка запроса данных" });
     }

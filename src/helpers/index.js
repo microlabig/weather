@@ -15,10 +15,11 @@ export const getCurrentDate = () => {
 // -----------------------------
 // получение текущего дня недели
 // -----------------------------
-export const getDayOfWeek = (timeStamp) => { // входной параметр - дата в формате timestamp
+export const getDayOfWeek = (timeStampStr) => { // входной параметр - дата в формате timestamp
   const dayList = ['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'];
+  const timeStamp = new Date(timeStampStr);
   const day = timeStamp.getDay();
-    getTime(timeStamp);
+  
   return dayList.filter((_, idx) => idx === day)[0];
 };
 

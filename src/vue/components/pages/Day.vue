@@ -6,21 +6,19 @@
                 span.weather__city погода на 
                 span.weater_date {{currentDate}}, {{currentDayOfWeek}}
             .weather__info
-                weather-day-card(
+                day-card(
                   :currentWeather="currentWeather"
                 )
-        //- pre {{currentWeather}}
-    
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import { getCurrentDate, getDayOfWeek } from "~/helpers";
-import WeatherDayCard from "~V/components/WeatherDayCard";
+import DayCard from "~V/components/DayCard";
 
 export default {
   components: {
-    WeatherDayCard
+    DayCard
   },
   computed: {
     ...mapGetters("weather", ["getWeatherData"]),
