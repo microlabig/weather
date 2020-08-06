@@ -2,7 +2,7 @@
 .weather__day
     .weather__title
         v-card-text
-            h2.display-1.text--primary.weather__header {{currentWeather.name}}, 
+            h2(class="grey--text mb-4").weather__header {{currentWeather.name}}, 
                 span.weather__city погода на 
                 span.weater_date {{currentDate}}, {{currentDayOfWeek}}
             .weather__info

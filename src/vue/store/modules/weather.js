@@ -1,8 +1,8 @@
-import { fetchWeatherDataOnCurrentDay } from "~/api/openweather";
+import { fetchWeatherDataOnCurrentDay, fetchWeatherIcon} from "~/api/openweather";
 
 const initState = {
   weather: {}, // данные о погоде
-  icon: null,
+  iconDay: null,
   isLoading: false, // флаг процесса загрузки данных
   isLoaded: false // флаг успешно загруженных данных
 };
@@ -22,6 +22,9 @@ export default {
     },
     SET_IS_LOADED: (state, flag) => {
       state.isLoaded = flag;
+    },
+    SET_ICON: (state, icon) => {
+      state.iconDay = icon;
     }
   },
 
@@ -34,6 +37,8 @@ export default {
         dispatch("startLoading"); // установим флаги начала загрузки
         const response = await fetchWeatherDataOnCurrentDay({ lat, lon }); // запросим данные о погоде на текущий день
         commit("SET_WEATHER", response.data); // сохраним данные в стор
+        const iconDay = await fetchWeatherIcon(response.data.weather[0]?.icon); // загрузим иконку 
+        commit("SET_ICON", iconDay); // сохраним данные в стор
         dispatch("endSuccessLoading");
       } catch (error) {
         dispatch("storeToInit");
@@ -72,7 +77,8 @@ export default {
   getters: {
     getWeatherData: store => store.weather,
     getIsLoading: store => store.isLoading,
-    getIsLoaded: store => store.isLoaded
+    getIsLoaded: store => store.isLoaded,
+    getIconDay: store => store.iconDay
   }
 };
 

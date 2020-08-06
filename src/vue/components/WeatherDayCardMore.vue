@@ -5,22 +5,22 @@ ul(
 ).card__more-list
     li.card__more-item
         v-card-text Максимальная температура 
-            span.card__value {{currentWeather.main.temp_max}}&deg;
+            span.card__value {{currentWeather.main.temp_max.toFixed(1)}} &deg;C
     li.card__item
         v-card-text Минимальная температура 
-            span.card__value {{currentWeather.main.temp_min}}&deg;
+            span.card__value {{currentWeather.main.temp_min.toFixed(1)}} &deg;C
     li.card__item
         v-card-text Давление 
             span.card__value {{currentWeather.main.pressure}} мбар
     li.card__item
         v-card-text Влажность 
-            span.card__value {{currentWeather.main.humidity}}%
+            span.card__value {{currentWeather.main.humidity}} %
     li.card__item
         v-card-text Облачность 
-            span.card__value {{currentWeather.clouds.all}}%
+            span.card__value {{currentWeather.clouds.all}} %
     li.card__item
         v-card-text Видимость 
-            span.card__value {{currentWeather.visibility}}м
+            span.card__value {{currentWeather.visibility}} м
     li.card__item
         v-card-text Восход 
             span.card__value {{sunrise}}

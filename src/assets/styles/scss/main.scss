@@ -1,7 +1,8 @@
-@import "_variables.scss"; 
-@import "_mixins.scss";
+@import "_variables";
+@import "_mixins";
 
-@import "./layout/fonts.scss";
-@import "./layout/base.scss";
+@import "./layout/fonts";
+@import "./layout/base";
 
-@import "./blocks/map.scss";
+@import "./blocks/map";
+@import "./blocks/card";

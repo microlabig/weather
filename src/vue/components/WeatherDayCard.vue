@@ -3,11 +3,13 @@ v-card(
         v-if="currentWeather.cod === 200"
         class="mx-auto"
         max-width="320"
+        elevation="10"
     ).weather__card.card
     .card__info
         //- v-img.card__icon
         weather-day-card-main-info(
             :currentWeather="currentWeather"
+            :show="show"
         )
         v-card(
             class="d-flex align-end flex-column"
