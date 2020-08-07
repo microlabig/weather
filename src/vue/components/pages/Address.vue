@@ -1,9 +1,6 @@
 <template lang="pug">
 section.address
     .container
-        button(
-          @click.prevent='showTooltip({type: "info", text: "123456789kls sdfkgj dflg dsf g"})'
-        ) PRESS
         v-card-text
           h2(class="display-1 text--primary").address__title Поиск города
         .address__element.map

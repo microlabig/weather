@@ -22,7 +22,6 @@ export default {
           name: "Day",
           component: Day
         },
-
         {
           path: "week",
           name: "Week",
