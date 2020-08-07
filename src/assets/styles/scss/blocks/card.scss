@@ -1,4 +1,9 @@
 .card__value {
-    font-weight: $bold;
-    color: rgba($font-color, .8);
+  font-weight: $bold;
+  color: rgba($font-color, 0.8);
+}
+
+.card__moreinfo {
+  position: relative;
+  left: -16%;
 }

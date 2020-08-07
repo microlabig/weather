@@ -1,8 +1,8 @@
 // -------------------------------------
 // текущая дата в формате (DD.MM.YYYYг.)
 // -------------------------------------
-export const getCurrentDate = () => {
-  const date = new Date();
+export const getCurrentDate = (dateStr = new Date()) => {
+  const date = new Date(dateStr);
   const day = date.getDate();
   const formatedDay = day < 10 ? "0" + day : day;
   const month = date.getMonth() + 1;
@@ -31,6 +31,7 @@ export const getTime = (timeStampStr, gmt = 0) => {
   const hours = timeStamp.getHours() + gmt;
   const formatedHours = hours < 10 ? "0" + hours : hours;
   const minutes = timeStamp.getMinutes();
+  const formatedMinutes = minutes < 10 ? "0" + minutes : minutes;
 
-  return `${formatedHours}:${minutes}`;
+  return `${formatedHours}:${formatedMinutes}`;
 }

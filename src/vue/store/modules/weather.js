@@ -1,5 +1,4 @@
 import * as WeatherAPI from "~/api/openweather";
-import * as Help from "~/helpers";
 
 const initState = {
   weather: {}, // данные о погоде
@@ -46,7 +45,7 @@ export default {
         const iconDaily = await WeatherAPI.fetchWeatherIcon(response.data.weather[0]?.icon); // загрузим иконку
         commit("SET_ICON", iconDaily); // сохраним данные в стор
 
-        dispatch("endSuccessLoading");
+        //dispatch("endSuccessLoading");
       } catch (error) {
         dispatch("storeToInit");
         throw new Error(
@@ -60,7 +59,7 @@ export default {
     // -------------------------------
     async fetchWeatherOnWeek({ commit, dispatch }, { lat, lon }) {
       try {
-        dispatch("startLoading"); // установим флаги начала загрузки
+        //dispatch("startLoading"); // установим флаги начала загрузки
 
         const response = await WeatherAPI.fetchWeatherWeek({ lat, lon });
         const promises = [];

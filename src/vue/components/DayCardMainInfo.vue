@@ -2,8 +2,8 @@
 ul(
     v-show="show"
     class="d-flex align-start flex-column"
-).card__more-list
-    li.card__more-item
+).card__list
+    li.card__item
         v-card-text
           v-row(align="center")
             v-col(cols="6")
@@ -13,16 +13,16 @@ ul(
                 :src="getIconDayImage"
                 alt="currentWeather.weather[0].description"
               )
-    li.card__more-item
-        v-card-text.card__value {{currentWeather.weather[0].description}}
+    li.card__item
+        v-card-text(class="title text-no-wrap").card__value {{currentWeather.weather[0].description}}
     li.card__item
         v-list-item
           v-list-item-icon(:style="{ transform: 'rotate(' + currentWeather.wind.deg + 'deg)'}")
             v-icon mdi-send
           v-list-item-subtitle.card__value {{currentWeather.wind.speed}} m/c
     li.card__item
-        v-card-text Ощущается как 
-            span.card__value {{currentWeather.main.feels_like.toFixed(1)}} &deg;C
+        v-card-text.body-1 Ощущается как 
+            span.card__value.body-1 {{currentWeather.main.feels_like.toFixed(1)}} &deg;C
 </template>
 
 <script>
