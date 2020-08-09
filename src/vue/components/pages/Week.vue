@@ -4,15 +4,19 @@
     v-card-text
       h2(class="grey--text mb-4").weather__header {{currentWeather.name}}, 
           span.weather__city погода на неделю
-      v-container
+      v-container.week
         v-row(dense)
           v-col(cols="12")
-            v-container(
-              v-for="(weather, i) in weatherOnWeek"
-              :key="i"
-              cols="12"
-            )
-              week-weather-card(:weather="weather")
+            ul.week__list
+              li(
+                v-for="(weather, i) in weatherOnWeek"
+                :key="i+0"
+              ).week__item
+                v-container(
+                  cols="12"
+                  :key="i+0"
+                )
+                  week-weather-card(:weather="weather")
 </template>
 
 <script>
@@ -23,11 +27,8 @@ export default {
   components: {
     WeekWeatherCard
   },
-  data() {
-    return {};
-  },
   computed: {
-    ...mapGetters('weather', ['getWeatherData', 'getWeatherOnWeek']),
+    ...mapGetters("weather", ["getWeatherData", "getWeatherOnWeek"]),
     // -----------------------
     // текущие данные о погоде
     // -----------------------
@@ -43,3 +44,21 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+.week__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.week__item {
+  display: inline-block;
+}
+
+// .fade-enter-active, .fade-leave-active {
+//   transition: opacity 2s ease-out;
+// }
+// .fade-enter, .fade-leave-to {
+//   opacity: 0;
+// }
+</style>

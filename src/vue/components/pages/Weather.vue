@@ -5,6 +5,7 @@ section.weather
             preloader
         .weather__data(v-else)
             .weather__result(v-if="isLoadedWeather")
+              transition(:name="transitionName" mode="out-in")
                 router-view
             .weather__result(v-else)
                 h2.weather__title Сервер не отвечает
@@ -47,6 +48,18 @@ export default {
   methods: {
     ...mapActions("weather", ["fetchWeatherDaily", "fetchWeatherOnWeek"])
   },
+  data() {
+    return {
+      transitionName: "slide-left"
+    }
+  },
+  watch: {
+    $route(to, from) {
+      const toDepth = to.name.length;
+      const fromDepth = from.name.length;
+      this.transitionName = toDepth < fromDepth ? "slide-right" : "slide-left";
+    }
+  },
   async created() {
     // запрос информации о погоде
     try {
@@ -59,3 +72,20 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+  .slide-left-enter,
+  .slide-right-leave-active {
+    opacity: 0;
+    //   -webkit-transform: translate(30px, 0);
+    transform: translate(300%, 0);
+    transition: all 0.7s;
+  }
+  .slide-left-leave-active,
+  .slide-right-enter {
+    opacity: 0;
+    //   -webkit-transform: translate(-30px, 0);
+    transform: translate(-300%, 0);
+    transition: all 0.7s;
+  }
+</style>

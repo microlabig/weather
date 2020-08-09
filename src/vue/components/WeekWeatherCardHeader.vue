@@ -11,7 +11,7 @@ v-col(class="pa-0 ma-0").card__item
                 v-card-text(class="headline") {{currentDayOfWeek(weather.dt)}} 
                     span.card__value {{currentDate(weather.dt)}}
             v-row
-                v-card-text(class="headline text-no-wrap").card__value {{weather.weather[0].description}}
+                v-card-text(class="title text-no-wrap").card__value {{weather.weather[0].description}}
         v-col(cols="4")
             v-row
                 v-card-text(class="text-no-wrap body-1 text-start") Вероятность осадков 

@@ -48,12 +48,6 @@ export default {
     $route(to, from) {
       const toDepth = to.path.split("/").length;
       const fromDepth = from.path.split("/").length;
-    //   const lastTo = to.path.split("/")[toDepth - 1];
-    //   const lastFrom = from.path.split("/")[fromDepth - 1];
-
-    //   console.log(to, from);
-    //   console.log(lastTo, lastFrom);
-    //   console.log(lastTo && lastFrom && lastTo > lastFrom);
       this.transitionName = toDepth < fromDepth ? "slide-right" : "slide-left";
     }
   }
@@ -61,34 +55,18 @@ export default {
 </script>
 
 <style lang="scss">
-// .slide-right-enter-active,
-// .slide-right-leave-active {
-//   transition: opacity 0.5s;
-// }
-// .slide-right-enter, .slide-right-leave-to /* ..slide-right-leave-active до версии 2.1.8 */ {
-//   opacity: 0;
-// }
-
-// .slide-left-enter-active,
-// .slide-left-leave-active {
-//   transition: opacity 0;
-// }
-// .slide-left-enter, .slide-left-leave-to /* .slide-left-leave-active до версии 2.1.8 */ {
-//   opacity: 0.5s;
-// }
-
-.slide-left-enter,
-.slide-right-leave-active {
-  opacity: 0;
-  //   -webkit-transform: translate(30px, 0);
-  transform: translate(300%, 0);
-  transition: all 0.7s;
-}
-.slide-left-leave-active,
-.slide-right-enter {
-  opacity: 0;
-  //   -webkit-transform: translate(-30px, 0);
-  transform: translate(-300%, 0);
-  transition: all 0.7s;
-}
+  .slide-left-enter,
+  .slide-right-leave-active {
+    opacity: 0;
+    //   -webkit-transform: translate(30px, 0);
+    transform: translate(300%, 0);
+    transition: all 0.7s;
+  }
+  .slide-left-leave-active,
+  .slide-right-enter {
+    opacity: 0;
+    //   -webkit-transform: translate(-30px, 0);
+    transform: translate(-300%, 0);
+    transition: all 0.7s;
+  }
 </style>
