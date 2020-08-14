@@ -1,5 +1,5 @@
 {
-  "name": "webpacktemplate",
+  "name": "my_weather_app",
   "version": "1.0.0",
   "description": "My template",
   "main": "index.js",
@@ -65,7 +65,6 @@
     "vue-loader": "^15.7.1",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.6.10",
-    "webdriverio": "^6.4.0",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.7",
     "webpack-dev-server": "^3.8.0",
