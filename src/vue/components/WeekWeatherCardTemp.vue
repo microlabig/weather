@@ -16,7 +16,7 @@ export default {
   props: {
     temp: {
       type: Object,
-      requierd: true
+      required: true
     }
   },
   data() {

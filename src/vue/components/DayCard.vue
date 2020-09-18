@@ -41,7 +41,7 @@ export default {
   props: {
     currentWeather: {
       type: Object,
-      requierd: true
+      required: true
     }
   },
   data() {

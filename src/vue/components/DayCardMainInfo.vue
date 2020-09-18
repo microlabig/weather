@@ -31,11 +31,11 @@ export default {
   props: {
     currentWeather: {
       type: Object,
-      requierd: true
+      required: true
     },
     show: {
       type: Boolean,
-      requierd: true
+      required: true
     },
   },
   computed: {

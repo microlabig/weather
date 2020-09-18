@@ -20,7 +20,7 @@ export default {
   props: {
     weather: {
       type: Object,
-      requierd: true
+      required: true
     }
   },
   components: {
